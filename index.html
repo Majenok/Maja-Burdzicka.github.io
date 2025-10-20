@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Portfolio — Maja Burdzicka</title>
+  <style>
+    :root{
+      --red:#b30000;
+      --white:#ffffff;
+      --frame:6px;
+      --container-width:1100px;
+      --max-thumb-height:220px;
+      --gothic-font:'Times New Roman', Times, serif;
+    }
+
+html, body {height: 100%;}
+body {
+margin: 0;
+font-family: var(--gothic-font);
+color: var(--white);
+display: block;
+padding: 40px 20px;
+box-sizing: border-box;
+background: #000;
+position: relative;
+overflow-x: hidden;
+overflow-y: auto;
+}
+
+.fire-bg {
+position: fixed;
+inset: 0;
+z-index: 0;
+pointer-events: none;
+overflow: hidden;
+}
+
+.wrap {
+position: relative;
+z-index: 2;
+width: 100%;
+max-width: var(--container-width);
+margin: 0 auto;
+}
+
+.fire-bg{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  z-index:0;
+}
+.square{
+  position:absolute;
+  bottom:-20px;
+  width:10px;
+  height:10px;
+  background:var(--red);
+  opacity:0.7;
+  animation:rise 6s linear infinite;
+}
+@keyframes rise{
+  0%{transform:translateY(0) scale(1) rotate(0deg);opacity:0.8;}
+  50%{opacity:1;}
+  100%{transform:translateY(-110vh) scale(0.3) rotate(180deg);opacity:0;}
+}
+
+.glow-frame{
+  border:var(--frame) solid var(--white);
+  box-shadow:0 0 25px rgba(255,0,0,0.6),inset 0 0 15px rgba(255,0,0,0.4);
+  animation:glowpulse 3s infinite alternate;
+  position:relative;
+  z-index:2;
+}
+@keyframes glowpulse{
+  from{box-shadow:0 0 10px rgba(255,0,0,0.3),inset 0 0 10px rgba(255,0,0,0.2);}
+  to{box-shadow:0 0 30px rgba(255,0,0,0.8),inset 0 0 20px rgba(255,0,0,0.6);}
+}
+
+.wrap{position:relative;z-index:3;width:100%;max-width:var(--container-width);margin:0 auto;}
+.card{padding:28px;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);}
+
+header{display:flex;gap:20px;align-items:center;margin-bottom:18px;justify-content:space-between;}
+
+.avatar{
+  width:110px;height:110px;flex:0 0 110px;
+  border:3px solid var(--red);
+  box-shadow:0 0 10px var(--red),0 0 25px rgba(255,0,0,0.8),inset 0 0 20px rgba(255,0,0,0.6);
+  animation:aura 4s ease-in-out infinite alternate;
+  overflow:hidden;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;color:var(--white);
+}
+@keyframes aura{
+  from { box-shadow: 0 0 10px var(--red), 0 0 20px rgba(255,0,0,0.5); }
+  to { box-shadow: 0 0 25px var(--red), 0 0 40px rgba(255,0,0,0.9); }
+}
+
+.avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+
+.title-box{flex:1;text-align:left;}
+.gif-box{flex:0 0 120px;height:120px;border:3px solid var(--white);border-radius:8px;overflow:hidden;}
+.gif-box img{width:100%;height:100%;object-fit:cover;display:block;}
+h1{margin:0;font-size:34px;color:var(--red);letter-spacing:1px;}
+p.lead{margin:6px 0 0;color:#ddd;opacity:0.95;}
+
+.about{margin:12px 0 22px;padding:14px;border:3px solid rgba(255,255,255,0.1);}
+.about h2{margin:0 0 8px;font-size:20px;color:var(--white);}
+.about p{margin:0;color:#dcdcdc;line-height:1.45;}
+
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 20px;}
+.filters button{background:transparent;border:2px solid var(--white);color:var(--white);padding:8px 12px;border-radius:6px;cursor:pointer;}
+.filters button.active{background:var(--red);border-color:var(--red);}
+
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.thumb{background:#111;border:4px solid var(--white);overflow:hidden;position:relative;cursor:pointer;min-height:140px;display:flex;align-items:center;justify-content:center;}
+.thumb img{width:100%;height:var(--max-thumb-height);object-fit:cover;display:block;transition:transform .35s ease;}
+.thumb:hover img{transform:scale(1.04);}
+
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.9);z-index:50;visibility:hidden;opacity:0;transition:opacity .25s ease,visibility .25s;}
+.modal.open{visibility:visible;opacity:1;}
+.modal-content{max-width:90%;max-height:90%;border:6px solid var(--white);background:#0a0a0a;padding:8px;box-sizing:border-box;}
+.modal-content img{max-width:100%;max-height:80vh;display:block;}
+.modal-caption{color:#ddd;margin-top:8px;text-align:center;}
+.modal-close{position:absolute;top:20px;right:20px;background:transparent;border:2px solid var(--white);padding:8px 12px;border-radius:6px;color:var(--white);cursor:pointer;}
+
+@media (max-width:600px){h1{font-size:26px}.avatar{width:84px;height:84px}.gif-box{display:none;}}
+  </style>
+</head>
+<body>
+  <div class="fire-bg" id="fireBg"></div>
+
+  <div class="wrap">
+    <div class="card glow-frame">
+      <header>
+        <div class="avatar" id="avatar">
+          <img data-src="IMG_1661.jpg" alt="Maja Burdzicka" onerror="this.style.display='none';document.getElementById('avatar').textContent='Twoje Zdjęcie';">
+        </div>
+        <div class="title-box">
+          <h1 id="name">Maja Burdzicka
+<a href="https://www.facebook.com/maja.burdzicka" target="_blank" style="margin-left:10px;">
+      <img data-src="facebook.png" alt="Facebook" style="width:22px; height:22px; vertical-align:middle; filter: drop-shadow(0 0 4px blue);">
+    </a>
+  </h1>
+          <p class="lead">GRAFICZKA • ARTYSTKA • MONTAŻ</p>
+        </div>
+        <div class="gif-box">
+          <img data-src="dooty.gif" alt="Gotycki GIF" onerror="this.style.display='none';">
+        </div>
+      </header>
+
+      <section class="about">
+        <h2>O mnie</h2>
+        <p id="aboutText">Cześć! Nazywam się Maja Burdzicka. Jestem młodą artystką z Lublina, a na co dzień uczę się w Warszawie – w technikum Łuckiej na kierunku grafiki i poligrafii cyfrowej. Sztuka to moja pasja, która towarzyszy mi od najmłodszych lat. Najbliżej mi do malarstwa i rysunku – szczególnie w stylu realistycznym, z nutą horroru i mroku. Uwielbiam tworzyć prace, które wywołują emocje i pobudzają wyobraźnię. Pracuję zarówno tradycyjnie, jak i cyfrowo – tworzę m.in. plakaty lub bannery w Adobe Illustratorze, gdzie łączę ilustrację z grafiką użytkową. Sztuka to dla mnie sposób opowiadania historii, których nie da się wyrazić słowami.</p>
+      </section>
+
+      <nav class="filters" aria-label="Kategorie galerii">
+        <button class="filter active" data-filter="all">Wszystkie</button>
+        <button class="filter" data-filter="grafika">Grafika</button>
+        <button class="filter" data-filter="rysunek">Rysunek</button>
+        <button class="filter" data-filter="malarstwo">Malarstwo</button>
+      </nav>
+
+      <main>
+        <div class="gallery" id="gallery">
+          <div class="thumb" data-cat="grafika" data-title="Wilk - Grafika"><img data-src="wilk.jpg" alt="Wilk"></div>
+          <div class="thumb" data-cat="grafika" data-title="Skeleton - Grafika"><img data-src="epic_skeleton.png" alt="Skeleton"></div>
+          <div class="thumb" data-cat="grafika" data-title="Soldier - Grafika"><img data-src="soldierrrr.png" alt="Soldier"></div>
+          <div class="thumb" data-cat="grafika" data-title="Makbet - Grafika"><img data-src="makbet.jpg" alt="Makbet"></div>
+          <div class="thumb" data-cat="grafika" data-title="Wilk 2 - Grafika"><img data-src="wolff.jpg" alt="Wilk 2"></div>
+          <div class="thumb" data-cat="grafika" data-title="Projekt internetu bezpieczeństwa - Grafika"><img data-src="projekt_internetu_bezpieczenstwa.jpg" alt="Projekt internetu bezpieczeństwa"></div>
+          <div class="thumb" data-cat="grafika" data-title="Wielkanoc - Grafika"><img data-src="Wielkanoc_MBurdzicka.jpg" alt="Wielkanoc"></div>
+          <div class="thumb" data-cat="grafika" data-title="Komiks - Grafika"><img data-src="komiks.jpg" alt="Komiks"></div>
+          <div class="thumb" data-cat="grafika" data-title="Jelenek - Grafika"><img data-src="jelenek.jpg" alt="Jelenek"></div>
+          <div class="thumb" data-cat="grafika" data-title="Ulotka - Grafika"><img data-src="ulotka.jpg" alt="Ulotka"></div>
+          <div class="thumb" data-cat="rysunek" data-title="Szkic B - Rysunek"><img data-src="rysunek1.jpg" alt="Szkic B"></div>
+          <div class="thumb" data-cat="malarstwo" data-title="Krzyk - Malarstwo"><img data-src="IMG_3013.jpg" alt="Krzyk"></div>
+          <div class="thumb" data-cat="malarstwo" data-title="Mój mały demon - Malarstwo"><img data-src="IMG_3014.jpg" alt="Mój mały demon"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal" id="modal" role="dialog" aria-hidden="true">
+    <button class="modal-close" id="modalClose">Zamknij</button>
+    <div class="modal-content" id="modalContent">
+      <img src="" alt="" id="modalImg">
+      <div class="modal-caption" id="modalCap"></div>
+    </div>
+  </div>
+
+  <script>
+    // 🔧 Folder ze zdjęciami
+    const imagePath = "Images/"; // <-- tu zmieniasz folder jeśli chcesz
+
+    // Ustawienie pełnych ścieżek dla wszystkich obrazków
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      img.src = imagePath + img.dataset.src;
+    });
+
+    // Filtry galerii
+    const filters=document.querySelectorAll('.filter');
+    const thumbs=document.querySelectorAll('.thumb');
+    filters.forEach(btn=>btn.addEventListener('click',()=>{
+      filters.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f=btn.dataset.filter;
+      thumbs.forEach(t=>{t.style.display=(f==='all'||t.dataset.cat===f)?'flex':'none';});
+    }));
+
+    // Modal powiększanie zdjęcia
+    const modal=document.getElementById('modal');
+    const modalImg=document.getElementById('modalImg');
+    const modalCap=document.getElementById('modalCap');
+    document.getElementById('gallery').addEventListener('click',e=>{
+      const thumb=e.target.closest('.thumb');
+      if(!thumb)return;
+      const img=thumb.querySelector('img');
+      modalImg.src=img.src;modalImg.alt=img.alt;modalCap.textContent=thumb.dataset.title||img.alt||'';
+      modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+    });
+    document.getElementById('modalClose').addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');});
+    modal.addEventListener('click',e=>{if(e.target===modal){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');}});
+
+    // Generowanie unoszących się czerwonych kwadratów
+    const fireBg=document.getElementById('fireBg');
+    const createSquare=()=>{
+      const square=document.createElement('div');
+      square.classList.add('square');
+      const size=Math.random()*10+4;
+      square.style.width=size+'px';
+      square.style.height=size+'px';
+      square.style.left=Math.random()*100+'%';
+      square.style.animationDuration=3+Math.random()*4+'s';
+      fireBg.appendChild(square);
+      setTimeout(()=>square.remove(),7000);
+    };
+    setInterval(createSquare,150);
+  </script>
+</body>
+</html>
